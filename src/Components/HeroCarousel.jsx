@@ -13,43 +13,6 @@ const Dot = ({ isActive, onClick }) => (
   />
 );
 
-const ArrowButton = ({ direction, onClick }) => (
-  <button
-    aria-label={direction === "prev" ? "Previous slide" : "Next slide"}
-    onClick={onClick}
-    className="absolute top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white shadow ring-1 ring-black/5 text-gray-700"
-    style={direction === "prev" ? { left: 12 } : { right: 12 }}
-  >
-    {direction === "prev" ? (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="h-5 w-5"
-      >
-        <path
-          fillRule="evenodd"
-          d="M12.79 5.23a.75.75 0 010 1.06L9.08 10l3.7 3.71a.75.75 0 11-1.06 1.06l-4.24-4.25a.75.75 0 010-1.06l4.24-4.24a.75.75 0 011.06 0z"
-          clipRule="evenodd"
-        />
-      </svg>
-    ) : (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="h-5 w-5"
-      >
-        <path
-          fillRule="evenodd"
-          d="M7.21 14.77a.75.75 0 010-1.06L10.92 10 7.2 6.29a.75.75 0 111.06-1.06l4.25 4.24a.75.75 0 010 1.06l-4.25 4.24a.75.75 0 01-1.06 0z"
-          clipRule="evenodd"
-        />
-      </svg>
-    )}
-  </button>
-);
-
 /**
  * HeroCarousel
  * props:
@@ -64,12 +27,9 @@ const HeroCarousel = ({ slides = [] }) => {
 
   const goTo = (idx) => {
     if (numSlides === 0) return;
-    const next = ((idx % numSlides) + numSlides) % numSlides;
-    setCurrentIndex(next);
+    const nextIndex = ((idx % numSlides) + numSlides) % numSlides;
+    setCurrentIndex(nextIndex);
   };
-
-  const next = () => goTo(currentIndex + 1);
-  const prev = () => goTo(currentIndex - 1);
 
   useEffect(() => {
     if (numSlides <= 1) return;
@@ -125,17 +85,10 @@ const HeroCarousel = ({ slides = [] }) => {
             </div>
           ))}
         </div>
-
-        {numSlides > 1 && (
-          <>
-            <ArrowButton direction="prev" onClick={prev} />
-            <ArrowButton direction="next" onClick={next} />
-          </>
-        )}
       </div>
 
       {numSlides > 1 && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/70 px-3 py-2 rounded-full shadow">
+        <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-white/70 px-3 py-2 rounded-full shadow">
           {safeSlides.map((_, idx) => (
             <Dot
               key={idx}
